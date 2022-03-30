@@ -1,8 +1,17 @@
-# sample/Script內的powershell檔(.ps1)全部都要右鍵執行過。
+# Download github from
+![Microsoft](https://github.com/microsoft/AISkillsForWindows/tree/master/samples/SentimentAnalyzerCustomSkill/cs)
+# Env
+## Install Visual Studio 2019
+## Install Windows 10 SDK from Visual Studio Installer
+## Install Microsoft.AI.Skills.SkillInterfacePreview NuGet from Visual Studio Installer
 
-# 確認NuGet套件內相關的套件都有安裝(Vsuial studio方案總管右鍵->管理方案的NuGet套件，安裝Microsoft.AI.Skills.SkillInterface，Microsoft.AI.Skills.Vision.ConceptTagger....)
+**sample/Script內的powershell檔(.ps1)全部都要右鍵執行過。**
 
-# 建置時，每個project都先右鍵清除後，重新建置，建置完才可執行。
+**確認NuGet套件內相關的套件都有安裝**
+
+Vsuial studio方案總管右鍵->管理方案的NuGet套件，安裝Microsoft.AI.Skills.SkillInterface，Microsoft.AI.Skills.Vision.ConceptTagger....
+
+**建置時，每個project都先右鍵清除後，重新建置，建置完才可執行。**
 
 # 裡面有三個版本的project，UWP有UI，.NetCore3.0沒有UI。
 1. .NetCore3.0
