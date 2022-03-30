@@ -1,5 +1,5 @@
 # Download github from
-![Microsoft](https://github.com/microsoft/AISkillsForWindows/tree/master/samples/SentimentAnalyzerCustomSkill/cs)
+[Microsoft](https://github.com/microsoft/AISkillsForWindows/tree/master/samples/SentimentAnalyzerCustomSkill/cs)
 # Env
 ## Install Visual Studio 2019
 ## Install Windows 10 SDK from Visual Studio Installer
