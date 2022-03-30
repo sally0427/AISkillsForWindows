@@ -1,0 +1,107 @@
+﻿<Page
+    x:Class="ObjectDetectorSkillSample.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SkillHelper="using:SkillHelper"
+    xmlns:UIHelper="using:UIHelper"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded">
+
+    <Page.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <UIHelper:CommonResourceDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel>
+            <!--Per skill panel-->
+            <controls:TabView x:Name="UISkillTabs" Grid.Column="1" 
+                              TabWidthBehavior="Actual" CanCloseTabs="False"
+                              IsCloseButtonOverlay="False" CanDragItems="False"
+                              CanReorderItems="False" AllowDrop="False"
+                              ItemsSource="{x:Bind m_skillWrappers}"
+                              ItemTemplate="{StaticResource SkillInformationDisplayTemplate}"
+                              SelectionChanged="UISkillTabs_SelectionChanged">
+
+                <controls:TabView.ItemHeaderTemplate>
+                    <DataTemplate x:DataType="SkillHelper:SkillWrapper">
+                        <TextBlock Text="{x:Bind Path=Descriptor.Information.Name}"/>
+                    </DataTemplate>
+                </controls:TabView.ItemHeaderTemplate>
+
+            </controls:TabView>
+
+            <!--Control to select an execution device -->
+            <controls:Expander VerticalAlignment="Top"
+                                       Header="Available execution device selected"
+                                       HorizontalContentAlignment="Stretch"
+                                       Foreground="Black"
+                                       Background="#FF7F7F7F"
+                                       BorderBrush="Black"
+                                       ExpandDirection="Down"
+                                       IsExpanded="False" 
+                                       Style="{StaticResource ResourceKey=UISubExpanderStyle}">
+
+                <ListBox Name="UISkillExecutionDevices" 
+                         ItemTemplate="{StaticResource SkillExecutionDeviceDisplayTemplate}" 
+                         SelectionChanged="UISkillExecutionDevices_SelectionChanged"/>
+
+            </controls:Expander>
+
+            <!--Controls for additional skill input features-->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Confidence Threshold: " VerticalAlignment="Center" />
+                <Slider Name="UIConfidenceThresholdControl" Minimum="0.0" Maximum="1.0" StepFrequency="0.1" Width="200" Value="{Binding Text, ElementName=UIDetectionThresholdValue, Mode=OneWay}" ValueChanged="UIDetectionThresholdControl_ValueChanged"/>
+                <TextBlock Name="UIConfidenceThresholdValue" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Name="UISelectAllObjectKind" Content="Detect all object kinds" Checked="UISelectAllObjectKind_Checked" Unchecked="UISelectAllObjectKind_Checked" VerticalAlignment="Top"/>
+                <controls:Expander Name="UIObjectKindFilterExpander" 
+                                   VerticalAlignment="Top"
+                                   Header="Object kind filter"
+                                   HorizontalContentAlignment="Stretch"
+                                   Foreground="Black"
+                                   Background="#FF7F7F7F"
+                                   BorderBrush="Black"
+                                   ExpandDirection="Down"
+                                   IsExpanded="False"
+                                   IsEnabled="False"
+                                   Visibility="Collapsed"
+                                   Style="{StaticResource ResourceKey=UISubExpanderStyle}">
+
+                    <ListView Name="UIObjectKindFilters" 
+                              SelectionMode="Multiple" 
+                              ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                              SelectionChanged="UIObjectKindFilters_SelectionChanged">
+                    </ListView>
+
+                </controls:Expander>
+            </StackPanel>
+
+            <!--Status dialog box-->
+            <TextBlock Name="UIMessageTextBlock" Text="Select an image source to start" HorizontalAlignment="Center" />
+
+            <!-- Video frame source controls -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#B2000000">
+                <AppBarButton x:Name="UICameraButton" Icon="AttachCamera" Label="Attach Camera" Click="UICameraButton_Click" Foreground="White" />
+                <AppBarButton x:Name="UIFilePickerButton" Icon="BrowsePhotos" Label="Open File" ToolTipService.ToolTip="Load an image or video file from disk" Click="UIFilePickerButton_Click" Foreground="White" />
+            </StackPanel>
+
+            <!-- Video display -->
+            <Grid>
+                <Image x:Name="UIProcessedPreview" Canvas.ZIndex="-1"  VerticalAlignment="Center" Stretch="Uniform" SizeChanged="UIProcessedPreview_SizeChanged" />
+                <Canvas Name="UIOverlayCanvas" Canvas.ZIndex="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+
+            <TextBox Name="UIPerfTextBlock" HorizontalAlignment="Center" IsReadOnly="True" AcceptsReturn="True" VerticalAlignment="Bottom"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

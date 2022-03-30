@@ -1,0 +1,108 @@
+﻿<!--
+*@@@+++@@@@******************************************************************
+
+Microsoft Windows Media Foundation
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+*@@@+++@@@@******************************************************************
+-->
+
+<Page
+    x:Class="ImageScanningSample.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:SkillHelper="using:SkillHelper"
+    xmlns:UIHelper="using:UIHelper"
+    xmlns:collectionsGeneric="using:System.Collections.Generic"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <UIHelper:CommonResourceDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel>
+            <!--Per skill panel-->
+            <controls:TabView x:Name="UISkillTabs" Grid.Column="1" 
+                              TabWidthBehavior="Actual" CanCloseTabs="False"
+                              IsCloseButtonOverlay="False" CanDragItems="False"
+                              CanReorderItems="False" AllowDrop="False"
+                              ItemsSource="{x:Bind m_skillWrappers}"
+                              ItemTemplate="{StaticResource SkillInformationDisplayTemplate}"
+                              SelectionChanged="UISkillTabs_SelectionChanged">
+
+                <controls:TabView.ItemHeaderTemplate>
+                    <DataTemplate x:DataType="SkillHelper:SkillWrapper">
+                        <TextBlock Text="{x:Bind Path=Descriptor.Information.Name}"/>
+                    </DataTemplate>
+                </controls:TabView.ItemHeaderTemplate>
+
+            </controls:TabView>
+
+            <!--Control to select an execution device -->
+            <controls:Expander VerticalAlignment="Top"
+                                       Header="Available execution device selected"
+                                       HorizontalContentAlignment="Stretch"
+                                       Foreground="Black"
+                                       Background="#FF7F7F7F"
+                                       BorderBrush="Black"
+                                       ExpandDirection="Down"
+                                       IsExpanded="False" 
+                                       Style="{StaticResource ResourceKey=UISubExpanderStyle}">
+
+                <ListBox Name="UISkillExecutionDevices" 
+                         ItemTemplate="{StaticResource SkillExecutionDeviceDisplayTemplate}" 
+                         SelectionChanged="UISkillExecutionDevices_SelectionChanged"/>
+
+            </controls:Expander>
+
+            <!--Alert user if an error occurs-->
+            <Border x:Name="UIStatusBorder">
+                <TextBlock Name="UIStatusBlock" Text="Select an image to start"/>
+            </Border>
+
+            <StackPanel Orientation="Horizontal">
+
+                <!--Select images to analyze with the skill-->
+                <Button Name="UIButtonFilePick"
+                        ToolTipService.ToolTip="Pick images from storage"
+                        HorizontalAlignment="Center"
+                        Click="UIButtonFilePick_Click" 
+                        FontWeight="Bold" 
+                        IsEnabled="False" 
+                        Margin="0,10,0,10"
+                        Width="50"
+                        Height="50">
+                    <Button.Content>
+                        <SymbolIcon Symbol="BrowsePhotos"/>
+                    </Button.Content>
+                </Button>
+
+            </StackPanel>
+
+            <ListView Name="UIResultPanel" Margin="0,10,0,10" SelectionMode="None">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+
+                        <controls:WrapPanel
+                            VerticalSpacing="5"
+                            HorizontalSpacing="5" 
+                            VerticalAlignment="Bottom"/>
+
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ListView>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
